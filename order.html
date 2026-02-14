@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Now | Brew Haven Cafe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>☕ Brew Haven Cafe</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="order.html">Order Now</a>
+    </nav>
+</header>
+
+<section class="order-section">
+
+<h2>🛒 Place Your Order</h2>
+
+<form onsubmit="return generateBill()">
+
+<!-- Name Field -->
+<input type="text" 
+       id="name" 
+       placeholder="Enter Your Name"
+       pattern="[A-Za-z ]{3,}"
+       title="Name must contain only letters and spaces (minimum 3 characters)"
+       oninput="this.value=this.value.replace(/[^A-Za-z ]/g,'')"
+       required>
+
+<!-- Phone Field -->
+<input type="tel" 
+       id="phone" 
+       placeholder="Enter Phone Number"
+       pattern="[0-9]{10}"
+       maxlength="10"
+       title="Enter valid 10-digit phone number"
+       oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+       required>
+
+<h3>Select Items & Quantity</h3>
+
+<div style="text-align:left; max-height:400px; overflow-y:auto;">
+
+<!-- SAMPLE ITEMS (You can keep your full list here) -->
+
+<div>
+<input type="checkbox" value="200" id="i1"> Hazelnut Caramel Latte - ₹200
+<input type="number" id="q1" value="1" min="1">
+</div>
+
+<div>
+<input type="checkbox" value="220" id="i2"> Cinnamon Honey Cappuccino - ₹220
+<input type="number" id="q2" value="1" min="1">
+</div>
+
+<div>
+<input type="checkbox" value="250" id="i3"> Truffle Mushroom Pizza - ₹250
+<input type="number" id="q3" value="1" min="1">
+</div>
+
+<div>
+<input type="checkbox" value="190" id="i4"> Crispy Paneer Crunch Burger - ₹190
+<input type="number" id="q4" value="1" min="1">
+</div>
+
+<div>
+<input type="checkbox" value="230" id="i5"> Creamy Alfredo Pasta - ₹230
+<input type="number" id="q5" value="1" min="1">
+</div>
+
+<div>
+<input type="checkbox" value="160" id="i6"> Loaded Nachos - ₹160
+<input type="number" id="q6" value="1" min="1">
+</div>
+
+</div>
+
+<button type="submit">Generate Bill</button>
+
+<div id="bill"></div>
+
+</form>
+
+</section>
+
+<footer>
+<p>© 2026 Brew Haven Cafe | Premium Taste Experience</p>
+</footer>
+
+<script>
+function generateBill(){
+
+var name=document.getElementById("name");
+var phone=document.getElementById("phone");
+
+// Trigger browser validation popups
+if(!name.checkValidity()){
+name.reportValidity();
+return false;
+}
+
+if(!phone.checkValidity()){
+phone.reportValidity();
+return false;
+}
+
+var total=0;
+var details="";
+var itemSelected=false;
+
+for(var i=1;i<=32;i++){
+var item=document.getElementById("i"+i);
+var qty=document.getElementById("q"+i);
+
+if(item && item.checked){
+itemSelected=true;
+
+var price=parseInt(item.value);
+var quantity=parseInt(qty.value);
+
+if(quantity<=0 || isNaN(quantity)){
+alert("Please enter valid quantity for selected items.");
+return false;
+}
+
+var itemTotal=price*quantity;
+total+=itemTotal;
+
+details+=item.parentElement.innerText+
+" | Qty: "+quantity+
+" | ₹"+itemTotal+"<br>";
+}
+}
+
+if(!itemSelected){
+alert("Please select at least one item!");
+return false;
+}
+
+document.getElementById("bill").innerHTML=
+"<h3>🧾 Bill Summary</h3>"+
+"Name: "+name.value+"<br>"+
+"Phone: "+phone.value+"<br><br>"+
+details+
+"<br><strong>Total Amount: ₹"+total+"</strong>";
+
+alert("Order placed successfully! ✅");
+
+return false; // prevent page reload
+}
+</script>
+
+</body>
+</html>
+
